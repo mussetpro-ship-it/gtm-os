@@ -61,18 +61,13 @@ Refresh plan:
 
 ## Install
 
-You need Node 18 or later, and preferably a git repository (the installer offers to create one).
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/mussetpro-ship-it/gtm-os/main/assets/install-dark.svg">
+  <img alt="Install in three steps. 1, paste the prompt into Claude Code, Codex or Hermes Agent, at the root of your repository. 2, answer the interview: about 35 questions, one at a time, 30 to 45 minutes. 3, your GTM OS runs." src="https://raw.githubusercontent.com/mussetpro-ship-it/gtm-os/main/assets/install-light.svg" width="100%">
+</picture>
 
-- **Claude Code, Codex or Hermes Agent**: open it at the root of your repository and paste the content of
-  [prompt-installation.md](prompt-installation.md). The agent writes the skill's 29 files, runs the installer
-  (which first checks every file against its checksum, so a bad copy stops there), then interviews you.
-- **Claude Code, from this repository**: clone it (`git clone https://github.com/mussetpro-ship-it/gtm-os`), copy
-  its `gtm-os/` folder to `.claude/skills/gtm-os/` in your repository, then say "install the GTM OS".
-
-The install takes 30 to 45 minutes, most of it an interview, one question at a time. It starts with your website,
-read first so you're asked less, then your best customers, what you sell and at what price, what you can prove,
-and who you compete with. Positioning, brand and messaging come last, drafted from your answers for you to correct.
-You can stop at any point: what's filled stays, and the next freshness check asks for the rest.
+Paste [prompt-installation.md](prompt-installation.md) into your agent, or clone this repository and copy `gtm-os/` to
+`.claude/skills/gtm-os/`. Node 18+. Stop anytime: what's filled stays.
 
 ## Day to day
 
@@ -142,6 +137,7 @@ The four-layer model (context, skills, orchestration, integrations) comes from M
 Kyle Poyar's Growth Unhinged on June 17, 2026. This repository is our own implementation of it, in our own words
 and drawings. We added what we found we needed while running one: lifetimes per document type, the `built_from`
 links, the freshness script and its refresh plan, and the provenance rules.
+The Claude, OpenAI and Hermes Agent logos belong to their owners ([sources](tools/logos/SOURCES.md)).
 
 Made by [Maxime Musset](https://github.com/mussetpro-ship-it).
 

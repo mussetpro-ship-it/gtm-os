@@ -285,10 +285,84 @@ function chain(t) {
   return svg(W, h, summary, body);
 }
 
+// ------------------------------------------------------------------ install, in three steps
+
+const LOGOS = join(ROOT, 'tools', 'logos');
+const iconPath = (name) => readFileSync(join(LOGOS, `${name}.svg`), 'utf8').match(/ d="([^"]+)"/)[1];
+
+function install(t, dark) {
+  const h = 330, cols = [40, 434, 828], colW = 332;
+  // The minute hand sweeps to 45, then rests: the lime arc is the 30 to 45 minutes an install takes.
+  const cx = 520, cy = 176, r = 64;
+  const point = (min, radius) => {
+    const a = ((min / 60) * 360 - 90) * (Math.PI / 180);
+    return [cx + radius * Math.cos(a), cy + radius * Math.sin(a)];
+  };
+  const [ax, ay] = point(30, r - 6), [bx, by] = point(45, r - 6);
+  const body = [
+    style(
+      `.hand { transform-origin: ${cx}px ${cy}px; animation: sweep 5s ease-in-out infinite; }` +
+        '@keyframes sweep { 0% { transform: rotate(0deg); } 70%, 100% { transform: rotate(270deg); } }' +
+        '@media (prefers-reduced-motion: reduce) { .hand { animation: none; transform: rotate(270deg); } }',
+    ),
+    '<defs><clipPath id="hermes"><rect x="0" y="0" width="56" height="56" rx="12"/></clipPath></defs>',
+    box(0.75, 0.75, W - 1.5, h - 1.5, t.card, t.edge, 22),
+  ];
+  const steps = ['Paste the prompt', 'Answer the interview', 'Your GTM OS runs'];
+  const captions = ['At the root of your repository', 'About 35 questions, one at a time', 'Foundations filled, plan ready'];
+  steps.forEach((step, i) => {
+    const x = cols[i];
+    body.push(`<circle cx="${x + 16}" cy="58" r="16" fill="${BLUE}"/>`);
+    body.push(text(x + 16, 63.5, String(i + 1), { size: 15, weight: 800, fill: WHITE, anchor: 'middle' }));
+    body.push(text(x + 44, 64, esc(step), { size: 20, weight: 800, fill: t.text, spacing: -0.4 }));
+    body.push(text(x, 292, esc(captions[i]), { size: 15.5, weight: 500, fill: t.muted }));
+    if (i) body.push(text(x - 24, 182, '→', { size: 28, weight: 700, fill: t.faint, anchor: 'middle' }));
+  });
+
+  // 1 · the three harnesses, as their own logos.
+  const tiles = [
+    ['Claude Code', `<path transform="scale(2.3333)" d="${iconPath('claude')}" fill="#D97757"/>`],
+    ['Codex', `<path transform="scale(2.3333)" d="${iconPath('openai')}" fill="${dark ? WHITE : '#000000'}"/>`],
+    ['Hermes Agent', `<g clip-path="url(#hermes)"><rect width="56" height="56" fill="${WHITE}"/><image href="data:image/png;base64,${readFileSync(join(LOGOS, 'hermes.png')).toString('base64')}" x="0" y="0" width="56" height="56"/></g>`],
+  ];
+  tiles.forEach(([name, mark], k) => {
+    const tx = cols[0] + k * 112, ty = 118;
+    body.push(box(tx, ty, 84, 84, t.chip, t.chipEdge, 20));
+    body.push(`<g transform="translate(${tx + 14} ${ty + 14})">${mark}</g>`);
+    body.push(text(tx + 42, ty + 112, name, { size: 13.5, weight: 700, fill: t.text, anchor: 'middle' }));
+  });
+
+  // 2 · the clock.
+  body.push(`<circle cx="${cx}" cy="${cy}" r="${r}" fill="${t.chip}" stroke="${t.chipEdge}" stroke-width="1.5"/>`);
+  body.push(`<path d="M${ax.toFixed(1)} ${ay.toFixed(1)} A${r - 6} ${r - 6} 0 0 1 ${bx.toFixed(1)} ${by.toFixed(1)}" fill="none" stroke="${LIME}" stroke-width="10" stroke-linecap="round"/>`);
+  for (let m = 0; m < 60; m += 5) {
+    const [x1, y1] = point(m, r - 14), [x2, y2] = point(m, r - (m % 15 ? 18 : 22));
+    body.push(`<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="${t.muted}" stroke-width="${m % 15 ? 1.5 : 2.5}" stroke-linecap="round"/>`);
+  }
+  body.push(`<g class="hand"><line x1="${cx}" y1="${cy}" x2="${cx}" y2="${cy - r + 16}" stroke="${BLUE}" stroke-width="4" stroke-linecap="round"/></g>`);
+  body.push(`<circle cx="${cx}" cy="${cy}" r="6" fill="${BLUE}"/>`);
+  body.push(text(612, 186, '30–45', { size: 50, weight: 800, fill: t.text, spacing: -1.5 }));
+  body.push(text(614, 218, 'minutes', { size: 18, weight: 500, fill: t.muted }));
+
+  // 3 · what's running at the end: the four layers, orchestration lit.
+  ['Context', 'Skills', 'Orchestration', 'Integrations'].forEach((layer, k) => {
+    const lx = cols[2], ly = 106 + k * 40, lit = k === 2;
+    const [fill, edge, fg] = lit ? [BLUE, BLUE, WHITE] : [t.chip, t.chipEdge, t.text];
+    body.push(box(lx, ly, 260, 32, fill, edge, 10));
+    body.push(`<circle cx="${lx + 18}" cy="${ly + 16}" r="4.5" fill="${lit ? LIME : t.faint}"/>`);
+    body.push(text(lx + 34, ly + 21.5, layer, { size: 15, weight: 700, fill: fg }));
+  });
+  const summary =
+    'Install in three steps. 1, paste the prompt into Claude Code, Codex or Hermes Agent, at the root of your repository. ' +
+    '2, answer the interview: about 35 questions, one at a time, 30 to 45 minutes. 3, your GTM OS runs: context, skills, orchestration, integrations.';
+  return svg(W, h, summary, body);
+}
+
 mkdirSync(OUT, { recursive: true });
 for (const mode of ['light', 'dark']) {
   writeFileSync(join(OUT, `banner-${mode}.svg`), banner());
   writeFileSync(join(OUT, `layers-${mode}.svg`), layers(CARDS[mode]));
   writeFileSync(join(OUT, `chain-${mode}.svg`), chain(CARDS[mode]));
+  writeFileSync(join(OUT, `install-${mode}.svg`), install(CARDS[mode], mode === 'dark'));
 }
-console.log('assets/: banner, layers and chain, light and dark (6 files)');
+console.log('assets/: banner, layers, chain and install, light and dark (8 files)');

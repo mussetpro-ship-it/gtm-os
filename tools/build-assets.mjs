@@ -358,11 +358,50 @@ function install(t, dark) {
   return svg(W, h, summary, body);
 }
 
+// ------------------------------------------------------------------ day to day: what you say, what happens
+
+// Line icons on a 32-unit grid, drawn with the same stroke.
+const ICONS = {
+  refresh: 'M25 9.5A10.5 10.5 0 1 0 26.5 19M25.5 3.5V10H19',
+  update: 'M9 4.5H19L24.5 10V27.5H9ZM19 4.5V10H24.5M12.5 15.5H20.5M12.5 20H17.5',
+  search: 'M14 6A8 8 0 1 1 14 22A8 8 0 1 1 14 6ZM20 20L27.5 27.5',
+  copy: 'M12 5.5H25A1.5 1.5 0 0 1 26.5 7V20A1.5 1.5 0 0 1 25 21.5H12A1.5 1.5 0 0 1 10.5 20V7A1.5 1.5 0 0 1 12 5.5ZM21.5 21.5V25A1.5 1.5 0 0 1 20 26.5H7A1.5 1.5 0 0 1 5.5 25V12A1.5 1.5 0 0 1 7 10.5H10.5',
+};
+
+const DAYS = [
+  ['Refresh the GTM OS', 'refresh', 'The plan, sources first', 'runs only what you approve'],
+  ['Update my ICP', 'update', 'Shows it, asks what changed', 'rewrites only that'],
+  ['Add a competitor: acme.com', 'search', 'A dated card', 'from their public pages'],
+  ['Build a new skill', 'copy', 'Starts from competitor-card', 'and its good-output example'],
+];
+
+function dayToDay(t) {
+  const h = 290, colW = 266, step = 282, size = 15;
+  const body = [style(), box(0.75, 0.75, W - 1.5, h - 1.5, t.card, t.edge, 22)];
+  DAYS.forEach(([say, icon, first, second], i) => {
+    const x = 40 + i * step;
+    // What you say, as a chat bubble with its tail on the left.
+    const bw = Math.min(colW, sans(say, size, 700) + 34);
+    body.push(`<path d="M${x + 14} 36H${x + bw - 14}A14 14 0 0 1 ${x + bw} 50V66A14 14 0 0 1 ${x + bw - 14} 80H${x + 26}L${x + 10} 92L${x + 12} 79A14 14 0 0 1 ${x} 66V50A14 14 0 0 1 ${x + 14} 36Z" fill="${BLUE}"/>`);
+    body.push(text(x + 17, 63.5, esc(say), { size, weight: 700, fill: WHITE }));
+    // What happens.
+    body.push(box(x, 116, 64, 64, t.chip, t.chipEdge, 16));
+    body.push(`<path transform="translate(${x + 16} ${116 + 16})" d="${ICONS[icon]}" fill="none" stroke="${BLUE}" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>`);
+    body.push(text(x, 220, esc(first), { size: 17, weight: 800, fill: t.text, spacing: -0.3 }));
+    body.push(text(x, 246, esc(second), { size: 15.5, weight: 500, fill: t.muted }));
+  });
+  const summary =
+    'Day to day. Say "Refresh the GTM OS": the plan, sources first, runs only what you approve. Say "Update my ICP": it shows the document, asks what changed and rewrites only that. ' +
+    'Say "Add a competitor: acme.com": a dated card from their public pages. Build a new skill: start from competitor-card and its good-output example.';
+  return svg(W, h, summary, body);
+}
+
 mkdirSync(OUT, { recursive: true });
 for (const mode of ['light', 'dark']) {
   writeFileSync(join(OUT, `banner-${mode}.svg`), banner());
   writeFileSync(join(OUT, `layers-${mode}.svg`), layers(CARDS[mode]));
   writeFileSync(join(OUT, `chain-${mode}.svg`), chain(CARDS[mode]));
   writeFileSync(join(OUT, `install-${mode}.svg`), install(CARDS[mode], mode === 'dark'));
+  writeFileSync(join(OUT, `day-to-day-${mode}.svg`), dayToDay(CARDS[mode]));
 }
-console.log('assets/: banner, layers, chain and install, light and dark (8 files)');
+console.log('assets/: banner, layers, chain, install and day to day, light and dark (10 files)');

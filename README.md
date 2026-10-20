@@ -71,12 +71,10 @@ Paste [prompt-installation.md](prompt-installation.md) into your agent, or clone
 
 ## Day to day
 
-| Say | What happens |
-|---|---|
-| "Refresh the GTM OS" | The agent reads `latest.md` and the freshness plan, adds what the script can't see (a decision that changes a foundation), shows you the plan, and runs the steps you approve |
-| "Update my ICP" | It shows what the document says, asks what changed, and rewrites only that. Same for positioning, messaging, brand, product and proof |
-| "Add a competitor: acme.com" | `competitor-card` reads their public pages and writes a dated card |
-| A new skill | Copy `.claude/skills/competitor-card/`, rename it, and rewrite its four parts for the new job |
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/mussetpro-ship-it/gtm-os/main/assets/day-to-day-dark.svg">
+  <img alt="Day to day. Say Refresh the GTM OS: the plan, sources first, runs only what you approve. Say Update my ICP: it shows the document, asks what changed and rewrites only that. Say Add a competitor: a dated card from their public pages. Build a new skill: start from competitor-card and its good-output example." src="https://raw.githubusercontent.com/mussetpro-ship-it/gtm-os/main/assets/day-to-day-light.svg" width="100%">
+</picture>
 
 <details>
 <summary><b>What gets installed</b></summary>

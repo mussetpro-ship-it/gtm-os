@@ -1,0 +1,15 @@
+# workstreams/ — where the work happens
+
+One folder per GTM lane. Each sorts its work in three folders:
+- `research/`: what we learned (a market study, a keyword pull, a call analysis). Type `research`.
+- `strategy/`: what we decided to do with it (a plan, a calendar, a sequence). Type `strategy`, re-checked
+  when one of its sources changes.
+- `execution/`: what we ship (posts, emails, ads, pages). A header is optional here: add one, type
+  `deliverable`, to a piece you want flagged when its strategy changes.
+
+| Workstream | What it will produce in the next 3 months | Skills |
+|---|---|---|
+{{WORKSTREAM_ROWS}}
+
+A strategy lists the foundations it uses in `built_from`. Raw data stays in a `data/` folder of the
+workstream, with its source and the date it was collected.

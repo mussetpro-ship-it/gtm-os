@@ -1,0 +1,39 @@
+# {{COMPANY}} GTM OS
+
+The go-to-market memory of {{COMPANY}}: who we sell to, who we compete with, what we promise and how we say
+it, what the product does today and what we can prove. Every agent session starts here. This file stays on
+one page.
+
+**Owner: {{OWNER}}.** A document becomes `validated` only with the owner's explicit OK.
+
+## At the start of every session
+1. Read [latest.md](latest.md): what changed recently.
+2. Run `node scripts/freshness.mjs --plan`: what's stale, what needs a re-check, what to run next. In Claude
+   Code, a session-start hook runs it for you.
+3. Before writing in a folder, read its `CLAUDE.md`.
+
+## The map
+| Where | What |
+|---|---|
+| [foundations/](foundations/CLAUDE.md) | Product, proof, ICP, competitors, positioning, messaging, brand: what every deliverable reads first |
+| [workstreams/](workstreams/CLAUDE.md) | One folder per GTM lane, each in `research/`, `strategy/`, `execution/` |
+| [decisions.md](decisions.md) | GTM decisions, dated and signed |
+| [connections.md](connections.md) | The tools plugged in, what they bring or receive; never a key or an ID |
+| [latest.md](latest.md), [history.md](history.md) | Short memory (recent changes) and long memory (major events, append-only) |
+| `.claude/rules/` | The rules, always on: memory and provenance, one home per document, how long a document stays true |
+| `.claude/lifetime.yaml`, `scripts/freshness.mjs` | How long each type of document stays true, and the script that checks it |
+| `.claude/skills/` | `gtm-os` (install, refresh, update a foundation) and `competitor-card`, the model for new skills |
+
+Claude Code loads the rules of `.claude/rules/` by itself. Other agents read them through [AGENTS.md](AGENTS.md).
+
+## The four layers
+- **Context**: this map, `latest.md`, `history.md` and `foundations/`.
+- **Skills**: `.claude/skills/`. A new skill starts as a copy of `competitor-card`: it says what it reads,
+  what it produces, where it puts it, and shows a good output. It reads the foundations, never a copy of them.
+- **Orchestration**: "refresh the GTM OS" runs the `gtm-os` refresh routine: it reads `latest.md` and the
+  freshness plan, and proposes which skills to run, in which order. Nothing runs without the owner's OK.
+- **Integrations**: `connections.md`.
+
+## After anything that matters
+A dated entry at the top of `latest.md`, in the same commit. A decision goes to `decisions.md` before it's
+applied.

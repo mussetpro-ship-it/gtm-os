@@ -1,0 +1,57 @@
+---
+name: competitor-card
+description: Research one competitor from its public pages and write or refresh its card in foundations/competitors/, then update the overview. Use when the user says "add a competitor", "refresh the competitor cards", "what is <company> doing now", or when the GTM OS refresh plan lists a competitor card. Also the model skill of this GTM OS: copy its folder to build a new one.
+---
+
+# Competitor card
+
+One card per competitor, from public sources, read against our own positioning. The card says what they
+sell, to whom, at what price, what they claim, and where they collide with us.
+
+<!-- Every skill of this OS says four things: what it reads, what it produces and where it puts it, the steps,
+and what a good output looks like (references/good-output.md). To build a new skill, copy this folder, rename
+it, and rewrite each section for the new job. Keep it short: the skill points to the foundations, it never
+copies them. -->
+
+## Reads
+- `foundations/positioning/positioning.md`: to see where they claim what we claim. If it's still empty (a
+  first install fills competitors before positioning), compare with the ICP and the product instead and mark
+  that part `(estimated)`: the next refresh of the card reads the positioning.
+- `foundations/icp/icp.md`: to see whether they sell to the same buyers.
+- The current card, if there is one: `foundations/competitors/<slug>.md`.
+- The web, with any page-reading tool of this session (`connections.md` lists them once filled). Without
+  one, ask the user to paste the pages. If the tool returns a summary rather than the page, a price or a
+  number read through it is "read, unverified (date)": say so, or get the raw text.
+
+## Produces
+`foundations/competitors/<slug>.md`, section by section like [references/good-output.md](references/good-output.md),
+with this header:
+
+```yaml
+type: competitor
+status: draft
+refreshed_by: competitor-card
+built_from:      # every page read, as web:<url>
+```
+
+Then its row in `foundations/competitors/competitors.md`, whose `built_from` lists the card.
+
+## Steps
+1. Get the competitor's name and website. If its card exists, read it first: you'll say what changed.
+2. Read 6 public pages at most: home, pricing, product or features, customers, the blog or changelog index,
+   and its latest post if the index gives dates. Note the date you read each one.
+3. Write the card like the good output. Every fact carries its source; every price and number its date.
+   What isn't on a page is "unavailable", never guessed.
+4. Read it against our positioning: where they claim what we claim (a collision), where they do the opposite
+   (a contrast), which buyers of our ICP they reach.
+5. If the card existed: start with "What changed since <last check>", and delete what no longer holds.
+6. Update its row in the overview and the overview's `built_from`.
+7. Fill the header: `verified_on` from `date +%Y-%m-%dT%H:%M`, a one-sentence `verification_note` (pages
+   read, and how), `status: draft`.
+8. Run `node scripts/freshness.mjs`: the card must not be flagged. If a change matters (a new price, a new
+   claim, a new segment), add an entry at the top of `latest.md`.
+
+## Never
+- Copy their sentences into our messaging: we take ideas, never words.
+- Log in anywhere, or pay for a tool, without the user's OK.
+- Mark the card `validated`: only the owner does.

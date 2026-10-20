@@ -1,0 +1,12 @@
+# {{COMPANY}} GTM OS — for every agent
+
+This repository is the go-to-market memory of {{COMPANY}}. Before any task:
+
+1. Read [CLAUDE.md](CLAUDE.md), the one-page map, then [latest.md](latest.md), what changed recently.
+2. Read the rules, always on: `.claude/rules/memory.md`, `.claude/rules/single-home.md`,
+   `.claude/rules/lifetime.md`.
+3. Run `node scripts/freshness.mjs --plan`: what's stale, what needs a re-check, what to run next.
+4. Before writing in a folder, read its `CLAUDE.md`.
+
+The skills live in `.claude/skills/`; `.agents/skills` links to them. Owner: {{OWNER}}. Nothing becomes
+`validated`, gets committed, pushed, published or paid for without the owner's OK.

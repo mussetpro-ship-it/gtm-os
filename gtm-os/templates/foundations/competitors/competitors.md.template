@@ -1,0 +1,27 @@
+---
+type: competitor
+status: draft
+owner: {{OWNER}}
+verified_on: {{NOW}}
+verified_by: gtm-os install
+verification_note: Empty template, created at install
+built_from:
+  - foundations/icp/icp.md
+refreshed_by: competitor-card
+---
+
+# Competitors
+
+<!-- What a buyer weighs against us: direct competitors, adjacent tools, doing it by hand, doing nothing.
+One card per direct competitor in this folder, written by the competitor-card skill, and listed in
+built_from above. Example of a row:
+| Alternative | Kind | In one line | Card |
+|---|---|---|---|
+| Acme | Direct | Same job for larger teams, sold through demos | [acme.md](acme.md) |
+-->
+
+## The alternatives
+<!-- The table above. -->
+
+## Where we win, where we lose
+<!-- From real deals when you have them; mark the rest as estimated. -->

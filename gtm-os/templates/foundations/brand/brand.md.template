@@ -1,0 +1,24 @@
+---
+type: brand
+status: draft
+owner: {{OWNER}}
+verified_on: {{NOW}}
+verified_by: gtm-os install
+verification_note: Empty template, created at install
+built_from:
+  - foundations/positioning/positioning.md
+refreshed_by: gtm-os
+---
+
+# Brand
+
+<!-- How we sound and how we look. Colors as hex codes, fonts by name, logo files by path. -->
+
+## Voice
+<!-- Three words for how we sound, what each means in practice, and one example that sounds right. -->
+
+## Words we use
+## Words we avoid
+
+## Visual identity
+<!-- Colors, fonts, logo files and where they live. -->

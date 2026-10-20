@@ -1,0 +1,30 @@
+---
+type: product
+status: draft
+owner: {{OWNER}}
+verified_on: {{NOW}}
+verified_by: gtm-os install
+verification_note: Empty template, created at install
+built_from: []
+refreshed_by: gtm-os
+---
+
+# Product
+
+<!-- What a customer gets today, in their words, not in engineering words. Two things never mix: what's
+live and what's planned. Sell only what's live. If the code lives in another repository, declare it as
+repo.app in .claude/lifetime.yaml and list its README or roadmap in built_from (app:README.md). -->
+
+## In one sentence
+<!-- What a customer gets, as they would say it. -->
+
+## What's live today
+<!-- One line per capability, with the date it went live. -->
+
+## What's coming
+<!-- One line per item, with its expected date, marked as a plan. -->
+
+## Price
+<!-- The plans, what's in each, the trial; the date you read or decided it. -->
+
+## Limits, and what it will never do

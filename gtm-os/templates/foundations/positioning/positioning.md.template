@@ -1,0 +1,36 @@
+---
+type: positioning
+status: draft
+owner: {{OWNER}}
+verified_on: {{NOW}}
+verified_by: gtm-os install
+verification_note: Empty template, created at install
+built_from:
+  - foundations/icp/icp.md
+  - foundations/competitors/competitors.md
+  - foundations/product/product.md
+  - foundations/proof/proof.md
+refreshed_by: gtm-os
+---
+
+# Positioning
+
+<!-- The choices everything else follows. Each claim links to a line of proof.md. -->
+
+## Category
+<!-- What a buyer would type to find us. -->
+
+## For whom
+<!-- The ICP in one line, and the persona we lead with. -->
+
+## The main claim
+<!-- The one sentence they should remember. -->
+
+## Why us
+<!-- What we do that the alternatives can't, each point with its proof. -->
+
+## Against what
+<!-- The alternative we replace: a competitor, a habit, doing nothing. -->
+
+## What we never say
+<!-- Claims we can't back, words that put us in the wrong category. -->

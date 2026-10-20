@@ -1,0 +1,29 @@
+---
+type: proof
+status: draft
+owner: {{OWNER}}
+verified_on: {{NOW}}
+verified_by: gtm-os install
+verification_note: Empty template, created at install
+built_from:
+  - foundations/product/product.md
+refreshed_by: gtm-os
+---
+
+# Proof
+
+<!-- What we can claim in public today. One row per claim, with its number, its date, its source, and
+whether we may name the customer (only with their written OK). Example of a row:
+| Claim | Number | Date | Source | Public? |
+|---|---|---|---|---|
+| Setup time | under 10 minutes | 2026-09 | Measured on 12 onboarding calls | Yes, anonymized |
+-->
+
+## Claims we can make
+<!-- The table above. -->
+
+## Customer words
+<!-- Quotes, reviews, logos; each with its date and the customer's OK to show it. -->
+
+## What we can't claim yet
+<!-- What people assume we do and we don't, or not yet. -->

@@ -1,0 +1,17 @@
+# foundations/ — what every deliverable reads first
+
+One folder per foundation. Each document carries a header (`.claude/rules/lifetime.md`): the freshness
+script says when it's stale, and which skill rebuilds it.
+
+| Foundation | What it answers | Kept fresh by |
+|---|---|---|
+| [product/](product/product.md) | What a customer gets today, the price, the limits | `gtm-os` update |
+| [proof/](proof/proof.md) | What we can claim in public, each claim dated and sourced | `gtm-os` update |
+| [icp/](icp/icp.md) | Who buys, what triggers them, who's not a fit | `gtm-os` update |
+| [competitors/](competitors/competitors.md) | What a buyer weighs against us; one card per competitor | `competitor-card` |
+| [positioning/](positioning/positioning.md) | Category, main claim, why us, against what | `gtm-os` update |
+| [messaging/](messaging/messaging.md) | One message per persona, objections and answers | `gtm-os` update |
+| [brand/](brand/brand.md) | Voice, words, visual identity | `gtm-os` update |
+
+Each foundation lists in `built_from` the others it depends on: when one changes, the script asks to re-check
+the ones built from it, in order. A replaced document is deleted, not archived.

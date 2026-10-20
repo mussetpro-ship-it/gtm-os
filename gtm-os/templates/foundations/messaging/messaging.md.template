@@ -1,0 +1,24 @@
+---
+type: messaging
+status: draft
+owner: {{OWNER}}
+verified_on: {{NOW}}
+verified_by: gtm-os install
+verification_note: Empty template, created at install
+built_from:
+  - foundations/positioning/positioning.md
+  - foundations/icp/icp.md
+  - foundations/proof/proof.md
+refreshed_by: gtm-os
+---
+
+# Messaging
+
+<!-- The positioning turned into words, persona by persona. Skills that write (posts, emails, pages, ads)
+read this file directly. -->
+
+## Per persona
+<!-- For each persona: the headline, three supporting points, the proof for each, the call to action. -->
+
+## Objections and answers
+<!-- The objections heard most, in the buyer's words, and what we answer. -->

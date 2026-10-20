@@ -1,0 +1,30 @@
+---
+type: icp
+status: draft
+owner: {{OWNER}}
+verified_on: {{NOW}}
+verified_by: gtm-os install
+verification_note: Empty template, created at install
+built_from: []
+refreshed_by: gtm-os
+---
+
+# Ideal customer profile
+
+<!-- Built from real customers (or, before launch, the people who said yes to a call or a pilot). Each line
+says where it comes from: (customer call, date), (site, date), (estimated). -->
+
+## The company
+<!-- Industry, size, stage, location. What they have in common beyond the obvious. -->
+
+## The people
+<!-- Who signs, who uses it; their role, seniority, what they're measured on, where they spend their time. -->
+
+## The trigger
+<!-- What happens right before they start looking for something like us. -->
+
+## Who is not a fit
+<!-- And why. -->
+
+## The customers behind this profile
+<!-- The 3 to 5 real customers it's built from. Naming them is fine in a private repository. -->

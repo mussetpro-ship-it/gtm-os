@@ -1,0 +1,22 @@
+# How long each type of document stays true, in days. scripts/freshness.mjs reads this table.
+#   never        never goes stale (a raw source, a dated decision)
+#   quarter      stale at the end of the calendar quarter it was checked in
+#   propagation  stale only when one of its sources changes
+# Change a number here and every document of that type follows: no document needs editing.
+# Defaults for a young company, where what moves fast gets checked fast.
+product: 30
+proof: 30
+competitor: 30
+icp: 90
+positioning: 90
+messaging: propagation
+brand: 365
+research: 60
+strategy: propagation
+deliverable: propagation
+metrics: quarter
+source: never
+decision: never
+
+# Other repositories a document can cite in built_from, as <name>:<path>.
+# Example: with the line  repo.app: ../my-app  a document can list  - app:README.md

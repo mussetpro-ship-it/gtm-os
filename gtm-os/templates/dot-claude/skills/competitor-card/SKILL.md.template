@@ -1,6 +1,6 @@
 ---
 name: competitor-card
-description: Research one competitor from its public pages and write or refresh its card in foundations/competitors/, then update the overview. Use when the user says "add a competitor", "refresh the competitor cards", "what is <company> doing now", or when the GTM OS refresh plan lists a competitor card. Also the model skill of this GTM OS: copy its folder to build a new one.
+description: Research one competitor from its public pages and write or refresh its card in foundations/competitors/, then update the overview. Use when the user says "add a competitor", "refresh the competitor cards", "what is <company> doing now", or when the GTM OS refresh plan lists a competitor card. Also the model skill of this GTM OS, to copy when building a new one.
 ---
 
 # Competitor card

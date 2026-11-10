@@ -1,0 +1,24 @@
+{
+  "name": "gtm-os",
+  "description": "One go-to-market memory your agents read before they write: ICP, competitors, positioning, messaging and brand, each document knowing when it goes stale and which skill rebuilds it.",
+  "author": {
+    "name": "Maxime Musset",
+    "url": "https://github.com/mussetpro-ship-it"
+  },
+  "homepage": "https://github.com/mussetpro-ship-it/gtm-os",
+  "repository": "https://github.com/mussetpro-ship-it/gtm-os",
+  "license": "MIT",
+  "keywords": [
+    "go-to-market",
+    "gtm",
+    "agent-skills",
+    "icp",
+    "positioning",
+    "messaging",
+    "competitors",
+    "brand"
+  ],
+  "skills": [
+    "./gtm-os"
+  ]
+}

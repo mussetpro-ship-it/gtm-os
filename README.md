@@ -3,6 +3,14 @@
   <img alt="GTM OS. The go-to-market memory your agents read first, and that tells them when it goes stale." src="https://raw.githubusercontent.com/mussetpro-ship-it/gtm-os/main/assets/banner-light.svg" width="100%">
 </picture>
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/mussetpro-ship-it/gtm-os/main/assets/before-after-dark.svg">
+  <img alt="Before and after, the same request to the same model, for a made-up company: write a cold email to the operations manager of a 40-technician HVAC company, for Fernway, a scheduling software. Without GTM OS, in an empty folder, the email stays general, and the agent says it kept the product claims generic because it doesn't know Fernway's features or customer results. With GTM OS, filled for that company, the email names how the schedule is built, 15 minutes a day down from 90, and a customer's 31% fewer no-shows; and the agent warns that the proof has been stale since 2026-10-30, so both numbers need a check before sending." src="https://raw.githubusercontent.com/mussetpro-ship-it/gtm-os/main/assets/before-after-light.svg" width="100%">
+</picture>
+
+The same request to the same model, for a made-up company: in an empty folder, then in a GTM OS filled for it,
+whose proof was six weeks old. [Both answers in full](examples/before-after.md).
+
 You use AI for go-to-market work, and each deliverable starts from a blank chat or from a context document nobody
 has opened in weeks. Two months later, a post quotes last quarter's price, an email pitches a feature that slipped,
 and the competitor list misses the two that launched since. The context was there. It just stopped being true, and
@@ -63,11 +71,25 @@ Refresh plan:
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/mussetpro-ship-it/gtm-os/main/assets/install-dark.svg">
-  <img alt="Install in three steps. 1, paste the prompt into Claude Code, Codex or Hermes Agent, at the root of your repository. 2, answer the interview: about 35 questions, one at a time, 30 to 45 minutes. 3, your GTM OS runs." src="https://raw.githubusercontent.com/mussetpro-ship-it/gtm-os/main/assets/install-light.svg" width="100%">
+  <img alt="Install in three steps. 1, add the skill to Claude Code, Codex or Hermes Agent, in one command or by pasting the prompt. 2, answer the interview: about 35 questions, one at a time, 30 to 45 minutes. 3, your GTM OS runs." src="https://raw.githubusercontent.com/mussetpro-ship-it/gtm-os/main/assets/install-light.svg" width="100%">
 </picture>
 
-Paste [prompt-installation.md](prompt-installation.md) into your agent, or clone this repository and copy `gtm-os/` to
-`.claude/skills/gtm-os/`. Node 18+. Stop anytime: what's filled stays.
+One command, at the root of your repository:
+
+```bash
+npx skills add mussetpro-ship-it/gtm-os
+```
+
+The [skills CLI](https://github.com/vercel-labs/skills) puts the skill where Claude Code, Codex, Cursor and many
+other agents read it. In Claude Code, the plugin works too:
+
+```
+/plugin install gtm-os --marketplace mussetpro-ship-it/gtm-os
+```
+
+Then say "install the GTM OS". Or paste [prompt-installation.md](prompt-installation.md) into your agent, or clone
+this repository and copy `gtm-os/` to `.claude/skills/gtm-os/`. Node 18+ (22.20+ for `npx skills`). Stop
+anytime: what's filled stays.
 
 ## Day to day
 
@@ -124,8 +146,12 @@ Tested on 2026-10-20, on macOS with Node 24:
   `latest.md` behind the commits, and every kind of malformed header;
 - the session-start hook's command, run the way Claude Code runs it.
 
-Not tested yet: the hook firing inside a live Claude Code session, the install in Codex and Hermes Agent,
-scheduled runs, Windows itself. Dust can't hold this OS (it has no repository to write into): install it with one
+Tested on 2026-11-10, on macOS: `npx skills add` (skills CLI 1.7.0) for Claude Code and Codex, and the Claude
+Code plugin (Claude Code 2.1.319), each from a local copy of this repository, then the install script from
+where each put the skill; the before and after at the top, run once.
+
+Not tested yet: the hook firing inside a live Claude Code session, the install run inside Codex, Cursor and
+Hermes Agent, scheduled runs, Windows itself. Dust can't hold this OS (it has no repository to write into): install it with one
 of the others.
 
 ## Credits

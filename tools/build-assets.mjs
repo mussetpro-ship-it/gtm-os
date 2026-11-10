@@ -94,6 +94,119 @@ function banner() {
   return svg(W, h, 'GTM OS. The go-to-market memory your agents read first, and that tells them when it goes stale. Works in Claude Code, Codex and Hermes Agent.', body);
 }
 
+// ------------------------------------------------------------------ before and after
+
+// Cuts a sentence into lines that fit a width, measured with the font's real glyph widths.
+function wrap(label, size, weight, width) {
+  const lines = [];
+  let line = '';
+  for (const word of label.split(' ')) {
+    const next = line ? `${line} ${word}` : word;
+    if (line && sans(next, size, weight) > width) {
+      lines.push(line);
+      line = word;
+    } else line = next;
+  }
+  if (line) lines.push(line);
+  return lines;
+}
+
+// Word for word from examples/before-after.md: the same request, run once in an empty folder and once in
+// a GTM OS filled for a made-up company. "…" marks a cut; nothing is reworded.
+const REQUEST =
+  'Fernway is our scheduling software for field-service teams. Write a cold email to Marco Diaz, operations manager at a 40-technician HVAC company in Columbus, Ohio. Under 120 words.';
+const SIDES = [
+  {
+    title: 'Without GTM OS',
+    where: 'An empty folder',
+    subject: 'Scheduling 40 techs in Columbus',
+    body: [
+      "Fernway is scheduling software built for field-service teams. When an emergency call comes in or a job runs long, it helps your dispatchers see who's available and rework the day without a chain of phone calls.",
+    ],
+    note: "“I kept the product claims generic because I don't know Fernway's specific features or customer results…”",
+  },
+  {
+    title: 'With GTM OS',
+    where: 'A GTM OS filled for Fernway, its proof last checked six weeks ago',
+    subject: "Tomorrow's board at 40 techs",
+    body: [
+      "Fernway builds it for you from your jobs, each tech's skills and the drive times. … Dispatchers tell us that takes about 15 minutes a day, down from about 90.",
+      'Brightline Heating & Air, 42 techs, saw 31% fewer no-shows over three months this summer.',
+    ],
+    flag: 'Stale proof',
+    note: '“…the proof foundation has been stale since 2026-10-30 (last checked 2026-09-30). Both numbers in the email come from it, so confirm them with Dana Reyes before sending.”',
+  },
+];
+
+function beforeAfter(t) {
+  const pad = 40, gap = 24, colW = (W - 2 * pad - gap) / 2, inner = colW - 56, size = 17.5, lead = 26, small = 16, smallLead = 23;
+  const body = [style()];
+  // The request, as a chat bubble across the top.
+  const ask = wrap(REQUEST, 17.5, 700, W - 2 * pad - 60);
+  const bubbleH = 30 + ask.length * 26;
+  const top = 72, bx = pad, bw = W - 2 * pad;
+  body.push(
+    `<path d="M${bx + 14} ${top}H${bx + bw - 14}A14 14 0 0 1 ${bx + bw} ${top + 14}V${top + bubbleH - 14}A14 14 0 0 1 ${bx + bw - 14} ${top + bubbleH}` +
+      `H${bx + 26}L${bx + 10} ${top + bubbleH + 12}L${bx + 12} ${top + bubbleH - 1}A14 14 0 0 1 ${bx} ${top + bubbleH - 14}V${top + 14}A14 14 0 0 1 ${bx + 14} ${top}Z" fill="${BLUE}"/>`,
+  );
+  ask.forEach((line, k) => body.push(text(bx + 22, top + 33 + k * 26, esc(line), { size: 17.5, weight: 700, fill: WHITE })));
+
+  // The two answers, each laid out first so both cards share the taller height.
+  const y0 = top + bubbleH + 40;
+  const layout = SIDES.map((side) => {
+    const where = wrap(side.where, small, 500, inner);
+    const paras = side.body.map((p) => wrap(p, size, 500, inner));
+    const note = wrap(side.note, small, side.flag ? 700 : 500, inner - 32);
+    let y = 48 + where.length * smallLead + 26; // title, then where it ran
+    const subjectY = y + 24;
+    y = subjectY + 26;
+    const paraY = paras.map((p) => {
+      const at = y + 24;
+      y += p.length * lead + 16;
+      return at;
+    });
+    const noteH = 22 + (side.flag ? 36 : 0) + note.length * smallLead + 4;
+    return { side, where, paras, note, subjectY, paraY, noteH, h: y + 20 + noteH + 24 };
+  });
+  const cardH = Math.max(...layout.map((l) => l.h));
+  // Both notes sit at the foot of their card, so the shorter email leaves its space above the note.
+  for (const l of layout) l.noteY = cardH - l.noteH - 24;
+  const h = y0 + cardH + pad;
+  body.unshift(box(0.75, 0.75, W - 1.5, h - 1.5, t.card, t.edge, 22));
+  body.push(text(pad, 50, 'SAME REQUEST · SAME MODEL · A MADE-UP COMPANY', { size: 13, weight: 700, fill: t.accent, spacing: 1.6 }));
+
+  layout.forEach((l, i) => {
+    const x = pad + i * (colW + gap), y = y0, lit = i === 1;
+    const c = lit ? HOT : { ...t, card: t.chip, edge: t.chipEdge };
+    body.push(box(x, y, colW, cardH, c.card, c.edge, 18));
+    body.push(text(x + 28, y + 48, l.side.title, { size: 27, weight: 800, fill: c.text, spacing: -0.7 }));
+    l.where.forEach((line, k) => body.push(text(x + 28, y + 76 + k * smallLead, esc(line), { size: small, weight: 500, fill: c.muted })));
+    // The email, as a sheet: its subject, a rule, then the excerpt.
+    body.push(text(x + 28, y + l.subjectY, `<tspan fill="${c.muted}" font-weight="500">Subject: </tspan>${esc(l.side.subject)}`, { size, weight: 700, fill: c.text }));
+    body.push(`<line x1="${x + 28}" y1="${y + l.subjectY + 15}" x2="${x + colW - 28}" y2="${y + l.subjectY + 15}" stroke="${lit ? '#7E99FF' : t.chipEdge}" stroke-width="1.5"/>`);
+    l.paras.forEach((p, k) => p.forEach((line, j) => body.push(text(x + 28, y + l.paraY[k] + j * lead, esc(line), { size, weight: 500, fill: c.text }))));
+    // What the agent said after the email.
+    const nx = x + 20, ny = y + l.noteY, nw = colW - 40;
+    body.push(box(nx, ny, nw, l.noteH, lit ? '#4A71FF' : t.card, lit ? '#7E99FF' : t.chipEdge, 14));
+    let ty = ny + 32;
+    if (l.side.flag) {
+      // The warning, as a white pill: a triangle drawn, not a glyph, so it shows in every font.
+      const label = l.side.flag.toUpperCase(), pw = sans(label, 12.5, 800, 1.2) + 46;
+      body.push(`<rect x="${nx + 16}" y="${ny + 16}" width="${pw.toFixed(1)}" height="26" rx="13" fill="${WHITE}"/>`);
+      body.push(`<path d="M${nx + 33} ${ny + 22.5}L${nx + 39.5} ${ny + 35}H${nx + 26.5}Z" fill="none" stroke="${BLUE}" stroke-width="1.8" stroke-linejoin="round"/>`);
+      body.push(`<line x1="${nx + 33}" y1="${ny + 27}" x2="${nx + 33}" y2="${ny + 30.5}" stroke="${BLUE}" stroke-width="1.8" stroke-linecap="round"/>`);
+      body.push(text(nx + 46, ny + 33.5, label, { size: 12.5, weight: 800, fill: BLUE, spacing: 1.2 }));
+      ty += 36;
+    }
+    l.note.forEach((line, k) => body.push(text(nx + 16, ty + k * smallLead, esc(line), { size: small, weight: l.side.flag ? 700 : 500, fill: lit ? WHITE : t.muted })));
+  });
+  const summary =
+    `Before and after, the same request and the same model, for a made-up company: "${REQUEST}" ` +
+    `Without GTM OS, in an empty folder, the email stays general: "${SIDES[0].body[0]}" The agent adds: "I kept the product claims generic because I don't know Fernway's specific features or customer results." ` +
+    `With GTM OS, filled for that company, the email uses its facts: "${SIDES[1].body.join(' ')}" And the agent warns: stale proof, ${SIDES[1].note.replace(/[“”…]/g, '')}`;
+  return svg(W, h, summary, body);
+}
+
 // ------------------------------------------------------------------ the four layers
 
 const LAYERS = [
@@ -308,8 +421,8 @@ function install(t, dark) {
     '<defs><clipPath id="hermes"><rect x="0" y="0" width="56" height="56" rx="12"/></clipPath></defs>',
     box(0.75, 0.75, W - 1.5, h - 1.5, t.card, t.edge, 22),
   ];
-  const steps = ['Paste the prompt', 'Answer the interview', 'Your GTM OS runs'];
-  const captions = ['At the root of your repository', 'About 35 questions, one at a time', 'Foundations filled, plan ready'];
+  const steps = ['Add the skill', 'Answer the interview', 'Your GTM OS runs'];
+  const captions = ['One command, or paste the prompt', 'About 35 questions, one at a time', 'Foundations filled, plan ready'];
   steps.forEach((step, i) => {
     const x = cols[i];
     body.push(`<circle cx="${x + 16}" cy="58" r="16" fill="${BLUE}"/>`);
@@ -353,7 +466,7 @@ function install(t, dark) {
     body.push(text(lx + 34, ly + 21.5, layer, { size: 15, weight: 700, fill: fg }));
   });
   const summary =
-    'Install in three steps. 1, paste the prompt into Claude Code, Codex or Hermes Agent, at the root of your repository. ' +
+    'Install in three steps. 1, add the skill to Claude Code, Codex or Hermes Agent, in one command or by pasting the prompt. ' +
     '2, answer the interview: about 35 questions, one at a time, 30 to 45 minutes. 3, your GTM OS runs: context, skills, orchestration, integrations.';
   return svg(W, h, summary, body);
 }
@@ -399,9 +512,10 @@ function dayToDay(t) {
 mkdirSync(OUT, { recursive: true });
 for (const mode of ['light', 'dark']) {
   writeFileSync(join(OUT, `banner-${mode}.svg`), banner());
+  writeFileSync(join(OUT, `before-after-${mode}.svg`), beforeAfter(CARDS[mode]));
   writeFileSync(join(OUT, `layers-${mode}.svg`), layers(CARDS[mode]));
   writeFileSync(join(OUT, `chain-${mode}.svg`), chain(CARDS[mode]));
   writeFileSync(join(OUT, `install-${mode}.svg`), install(CARDS[mode], mode === 'dark'));
   writeFileSync(join(OUT, `day-to-day-${mode}.svg`), dayToDay(CARDS[mode]));
 }
-console.log('assets/: banner, layers, chain, install and day to day, light and dark (10 files)');
+console.log('assets/: banner, before and after, layers, chain, install and day to day, light and dark (12 files)');

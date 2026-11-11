@@ -1,6 +1,6 @@
 ---
 name: gtm-os
-description: Install and run a four-layer GTM OS (context, skills, orchestration, integrations) in this repository, so agents read the same go-to-market context and know when it goes stale. Use when the user says "install the GTM OS", "set up my GTM context", "refresh the GTM OS", "what's stale", "what should I run next", "update my ICP / positioning / messaging / brand / product / proof", or invokes /gtm-os. It runs in three modes, install (first time), refresh (says which skills to run, in which order, and runs them on approval) and update <foundation>. Needs an agent that can read and write files and run Node 18+ (Claude Code, Codex, Hermes Agent).
+description: Install and run a four-layer GTM OS (context, skills, orchestration, integrations) in this repository, so agents read the same go-to-market context and know when it goes stale. Use when the user says "install the GTM OS", "set up my GTM context", "refresh the GTM OS", "what's stale", "what should I run next", "update my ICP / positioning / messaging / brand / product / proof", or invokes /gtm-os. Three modes: install (first time), refresh (says which skills to run, in which order, and runs them on approval), update <foundation>. Needs an agent that can read and write files and run Node 18+ (Claude Code, Codex, Hermes Agent).
 ---
 
 # GTM OS

@@ -10,7 +10,7 @@ Throughout: one question at a time; never overwrite one of my files without aski
 ===== FILE: SKILL.md =====
 ---
 name: gtm-os
-description: Install and run a four-layer GTM OS (context, skills, orchestration, integrations) in this repository, so agents read the same go-to-market context and know when it goes stale. Use when the user says "install the GTM OS", "set up my GTM context", "refresh the GTM OS", "what's stale", "what should I run next", "update my ICP / positioning / messaging / brand / product / proof", or invokes /gtm-os. It runs in three modes, install (first time), refresh (says which skills to run, in which order, and runs them on approval) and update <foundation>. Needs an agent that can read and write files and run Node 18+ (Claude Code, Codex, Hermes Agent).
+description: Install and run a four-layer GTM OS (context, skills, orchestration, integrations) in this repository, so agents read the same go-to-market context and know when it goes stale. Use when the user says "install the GTM OS", "set up my GTM context", "refresh the GTM OS", "what's stale", "what should I run next", "update my ICP / positioning / messaging / brand / product / proof", or invokes /gtm-os. Three modes: install (first time), refresh (says which skills to run, in which order, and runs them on approval), update <foundation>. Needs an agent that can read and write files and run Node 18+ (Claude Code, Codex, Hermes Agent).
 ---
 
 # GTM OS
@@ -62,9 +62,8 @@ stays, and the freshness plan asks for the rest later.
 1. Run `node --version`. The scripts need Node 18 or later. Without it, say what won't work (the install
    script, the freshness check, the refresh plan, the session-start hook) and ask the user to install Node
    first.
-2. Look at the repository root. If it holds anything besides this skill (`.claude/skills/gtm-os/`, and after
-   `npx skills add` its copy in `.agents/skills/gtm-os/` and `skills-lock.json`), say in two lines what's there
-   and ask before going on. The installer never overwrites a file: it skips it and lists it.
+2. Look at the repository root. If it holds anything besides `.claude/skills/gtm-os/`, say in two lines
+   what's there and ask before going on. The installer never overwrites a file: it skips it and lists it.
 3. Is it a git repository (`git rev-parse --is-inside-work-tree`)? If not, offer `git init`: git keeps the
    history when the rules delete what no longer holds. Commit nothing without the user's OK.
 
@@ -75,8 +74,7 @@ Ask, one at a time:
    lifecycle, partnerships." Turn the answer into short folder names.
 
 Then, from the repository root, run the install script with the answers (if this skill lives elsewhere, in
-`.agents/skills/gtm-os` for Codex or Cursor, in a Claude Code plugin's folder or in Hermes Agent's own skills
-folder, use that path instead of `.claude/skills/gtm-os`):
+Hermes Agent's own skills folder for instance, use that path instead of `.claude/skills/gtm-os`):
 
 ```bash
 node .claude/skills/gtm-os/scripts/install.mjs --target . --company "<company>" --owner "<owner>" --workstreams <lanes, comma-separated>
@@ -86,8 +84,7 @@ It first checks that the skill's files match their checksums. If it lists a file
 mis-copied: rewrite it from its source (the prompt or the repository) and run the command again. Then it copies
 the templates and fills in the names and today's date; creates each workstream with its `research/`,
 `strategy/` and `execution/` folders; installs `competitor-card` in `.claude/skills/`; links `.agents/skills` to
-`.claude/skills` for Codex and Hermes Agent (or, if `.agents/skills/` already exists, links `competitor-card`
-into it); and adds the session-start hook for Claude Code in
+`.claude/skills` for Codex and Hermes Agent; and adds the session-start hook for Claude Code in
 `.claude/settings.json`. It prints what it created and what it skipped.
 
 If `.claude/settings.json` already existed, the installer leaves it alone and prints the hook: show it to the
@@ -377,24 +374,8 @@ try {
   lstatSync(agentsSkills);
   exists = true;
 } catch {}
-if (exists) {
-  // A real .agents/skills folder, as `npx skills add` leaves it: link in each skill this installer brings.
-  const linked = [];
-  for (const name of readdirSync(join(TEMPLATES, 'dot-claude', 'skills')).filter((n) => !n.startsWith('.'))) {
-    const entry = join(agentsSkills, name);
-    try {
-      lstatSync(entry);
-      continue;
-    } catch {}
-    try {
-      symlinkSync(join('..', '..', '.claude', 'skills', name), entry, 'junction');
-      linked.push(name);
-    } catch {}
-  }
-  link = linked.length
-    ? `.agents/skills already exists: ${linked.join(', ')} linked into it, for Codex and Hermes Agent`
-    : '.agents/skills already exists: not linked; Codex and Hermes Agent read the skills there';
-} else {
+if (exists) link = '.agents/skills already exists: not linked; Codex and Hermes Agent read the skills there';
+else {
   try {
     mkdirSync(join(target, '.agents'), { recursive: true });
     symlinkSync(join('..', '.claude', 'skills'), agentsSkills, 'junction');
@@ -677,7 +658,7 @@ Number of customers, revenue, churn, the Enterprise price.
 ===== FILE: templates/dot-claude/skills/competitor-card/SKILL.md.template =====
 ---
 name: competitor-card
-description: Research one competitor from its public pages and write or refresh its card in foundations/competitors/, then update the overview. Use when the user says "add a competitor", "refresh the competitor cards", "what is <company> doing now", or when the GTM OS refresh plan lists a competitor card. Also the model skill of this GTM OS, to copy when building a new one.
+description: Research one competitor from its public pages and write or refresh its card in foundations/competitors/, then update the overview. Use when the user says "add a competitor", "refresh the competitor cards", "what is <company> doing now", or when the GTM OS refresh plan lists a competitor card. Also the model skill of this GTM OS: copy its folder to build a new one.
 ---
 
 # Competitor card
@@ -1372,11 +1353,11 @@ workstream, with its source and the date it was collected.
 
 ===== FILE: checksums.txt =====
 # sha256 of each file of this skill, after normalizing line endings and trailing spaces. install.mjs checks them.
-8a31351a20d5faf0879eb2cabd119b15859e9bc5fee2bff03fbd8775177049c4  SKILL.md
-8127b643a1df7d59a158e4c6cb3e4f4f4cd1c6a64cf1255a276e08792ead5c78  references/install.md
+423ead24252c64bf3b55bcdb3f2da9384dc26238cd9f59b410671198f2794676  SKILL.md
+99527344593f962cc8b623786131a195b55fd5c15344af5e10e2341a8f0c0364  references/install.md
 b258962f5feeb26948efe01734db91b2eb2dc39835fa58606f2fd718ba7ca29e  references/interview.md
 9caa3bc29b38553724819ff92cea390334168fae31d7693ad9b4941633c87d68  references/refresh.md
-82d68b6a06d4d50433c1c4ef4217202f6b7e57f886b26ffcfbee686ea143a1bf  scripts/install.mjs
+8b326b3f9a5bbeee040edc14b9c6120d3230ea6308cdb636264f5cbee558dd43  scripts/install.mjs
 5d592068282694b2a149a3a10a3562f502993e2039c5c6a437baac68ee9373b0  templates/AGENTS.md.template
 3b5340bbc80d6fdbdf3244df3e4dced976380d915aa6b6504591c96cfdfee013  templates/CLAUDE.md.template
 f127fc270e9990c29a0fa7f0cb8b02623650100bf75b71fe5668cf3d74655126  templates/connections.md
@@ -1387,7 +1368,7 @@ d75322b969d8db08fd16c231fe245face4454567b1bf9d50aee36d45280bc36f  templates/dot-
 ea3edf575da717553d7b568f5e173580b896204db77128b93dc5d099fe10c0be  templates/dot-claude/rules/single-home.md
 e0cd4dc4b9cab4f4c0ddc4e6b30bb0ffe3f74520bb988385778f37caedad6b59  templates/dot-claude/settings.json
 cc22fe72b4948a28b8b21ce852bea4d21139b4fcd1000def0060cb86064edecb  templates/dot-claude/skills/competitor-card/references/good-output.md
-f93eec4d057fa8c2c286d3a3d34ca17ffb3c337baa9739e92872cad9abd4f173  templates/dot-claude/skills/competitor-card/SKILL.md.template
+bbb7b8646304b3a6fbd856226b177a0839a572b1116496c39eab3742a19a74b9  templates/dot-claude/skills/competitor-card/SKILL.md.template
 3ba8314e0a66ab27541be43c9f768227e1522cd345703ca8765ab487d4673911  templates/foundations/brand/brand.md.template
 a9691081a242a6343fe2881572d3c7119af5044ffb584d1c7ecf9ca04bc4a20a  templates/foundations/CLAUDE.md.template
 d06622a020eb1fb107cc123da1da2de1ba38a06666c62e2f0eae34bd020c8529  templates/foundations/competitors/competitors.md.template

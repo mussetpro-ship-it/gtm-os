@@ -7,9 +7,8 @@ stays, and the freshness plan asks for the rest later.
 1. Run `node --version`. The scripts need Node 18 or later. Without it, say what won't work (the install
    script, the freshness check, the refresh plan, the session-start hook) and ask the user to install Node
    first.
-2. Look at the repository root. If it holds anything besides this skill (`.claude/skills/gtm-os/`, and after
-   `npx skills add` its copy in `.agents/skills/gtm-os/` and `skills-lock.json`), say in two lines what's there
-   and ask before going on. The installer never overwrites a file: it skips it and lists it.
+2. Look at the repository root. If it holds anything besides `.claude/skills/gtm-os/`, say in two lines
+   what's there and ask before going on. The installer never overwrites a file: it skips it and lists it.
 3. Is it a git repository (`git rev-parse --is-inside-work-tree`)? If not, offer `git init`: git keeps the
    history when the rules delete what no longer holds. Commit nothing without the user's OK.
 
@@ -20,8 +19,7 @@ Ask, one at a time:
    lifecycle, partnerships." Turn the answer into short folder names.
 
 Then, from the repository root, run the install script with the answers (if this skill lives elsewhere, in
-`.agents/skills/gtm-os` for Codex or Cursor, in a Claude Code plugin's folder or in Hermes Agent's own skills
-folder, use that path instead of `.claude/skills/gtm-os`):
+Hermes Agent's own skills folder for instance, use that path instead of `.claude/skills/gtm-os`):
 
 ```bash
 node .claude/skills/gtm-os/scripts/install.mjs --target . --company "<company>" --owner "<owner>" --workstreams <lanes, comma-separated>
@@ -31,8 +29,7 @@ It first checks that the skill's files match their checksums. If it lists a file
 mis-copied: rewrite it from its source (the prompt or the repository) and run the command again. Then it copies
 the templates and fills in the names and today's date; creates each workstream with its `research/`,
 `strategy/` and `execution/` folders; installs `competitor-card` in `.claude/skills/`; links `.agents/skills` to
-`.claude/skills` for Codex and Hermes Agent (or, if `.agents/skills/` already exists, links `competitor-card`
-into it); and adds the session-start hook for Claude Code in
+`.claude/skills` for Codex and Hermes Agent; and adds the session-start hook for Claude Code in
 `.claude/settings.json`. It prints what it created and what it skipped.
 
 If `.claude/settings.json` already existed, the installer leaves it alone and prints the hook: show it to the

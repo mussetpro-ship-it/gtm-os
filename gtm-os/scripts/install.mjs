@@ -107,24 +107,8 @@ try {
   lstatSync(agentsSkills);
   exists = true;
 } catch {}
-if (exists) {
-  // A real .agents/skills folder, as `npx skills add` leaves it: link in each skill this installer brings.
-  const linked = [];
-  for (const name of readdirSync(join(TEMPLATES, 'dot-claude', 'skills')).filter((n) => !n.startsWith('.'))) {
-    const entry = join(agentsSkills, name);
-    try {
-      lstatSync(entry);
-      continue;
-    } catch {}
-    try {
-      symlinkSync(join('..', '..', '.claude', 'skills', name), entry, 'junction');
-      linked.push(name);
-    } catch {}
-  }
-  link = linked.length
-    ? `.agents/skills already exists: ${linked.join(', ')} linked into it, for Codex and Hermes Agent`
-    : '.agents/skills already exists: not linked; Codex and Hermes Agent read the skills there';
-} else {
+if (exists) link = '.agents/skills already exists: not linked; Codex and Hermes Agent read the skills there';
+else {
   try {
     mkdirSync(join(target, '.agents'), { recursive: true });
     symlinkSync(join('..', '.claude', 'skills'), agentsSkills, 'junction');
